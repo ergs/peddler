@@ -35,20 +35,61 @@ class Reactor(Facility):
         tooltip="Cycle length of the reactor.",
         uilabel="Cycle Length"
     )
+    
+    recipe = ts.String(
+        doc="Recipe", 
+        tooltip="Recipe",
+        uilabel="Recipe"
+    )
+
+    fuel_mass = ts.Double(
+        doc="Mass of requested fuel", 
+        tooltip="Mass of Batch",
+        uilabel="Fuel Mass"
+    )
+
+
+    fresh_fuel = ts.ResBufMaterialInv()
+    core = ts.ResBufMaterialInv()
+    waste = ts.ResBufMaterialInv()
+    
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        time = 0;
+        self.ct_time = 0;
+        self.rx_time = 0;
     
     def tick(self):
-        if time < 
+        if self.rx_time == self.cycle_length:
+            self.waste.push(self.core.pop)
+            self.core.push(self.fresh_fuel.pop)
+            self.rx_time = 0
+        elif self.rx_time < self.cycle_length:
+            self.rx_time += 1
 
     def tock(self):
+        if self.rx_time == 0:
+            self.ct_time = 0
 
-    def get_matl_bids(self):
+    def get_material_requests(self):
+        ports = []
+        if self.fresh_fuel.count == 0:
+            request_qty = self.fuel_mass
+            recipe_a = self.context().get_recipe(self.recipe)
+            target_a = ts.Material.create_untracked(request_qty, recipe_a)
+            commods = {self.commodity: target_a}
+            port = {"commodities": commods, "constraints": request_qty}
+            ports.append(port)
+        if self.ct_time == self.cycle_length-self.request_lead_time
+            request_qty = self.fuel_mass
+            recipe_a = self.context().get_recipe(self.recipe)
+            target_a = ts.Material.create_untracked(request_qty, recipe_a)
+            commods = {self.commodity+"-contract": target_a}
+            port = {"commodities": commods, "constraints": request_qty}
+            ports.append(port)
+        return ports
 
-    def get_matl_requests(self):
-
-    def get_matl_trades(self):
-
-    def accept_matl_trades(self):
+    def accept_material_trades(self, responses):
+        for mat in responses:
+            self.fresh_fuel.push(mat)
+        
