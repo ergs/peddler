@@ -73,7 +73,7 @@ class Truck(Facility):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        #self.inventory.capacity = self.capacity
+        self.inventory.capacity = self.capacity
 
     def tock(self):
         if self.return_trip_time >= 0:
@@ -92,7 +92,7 @@ class Truck(Facility):
             #requestfuel
             target_a = ts.Material.create_untracked(self.contract[0], self.contract[1])
             commods = {self.source_commodity: target_a}
-            port = {"commodities": commods, "constraints": self.contract[0]}
+            port = {"commodities": commods, "constraints": self.inventory.contract[0]}
             return [port]
         else:
             return []
@@ -106,7 +106,7 @@ class Truck(Facility):
             #offercontract
             reqs = requests[self.dest_commodity+"-contract"]
             bids = list(reqs)
-            port = {"bids": bids, "constraints": self.capacity}
+            port = {"bids": bids, "constraints": self.inventory.capacity}
         elif self.contractee > -1 and self.inventory.count > 0 and self.trip_time == self.total_trip_duration:
             #offerfuel
             reqs = requests[self.dest_commodity]

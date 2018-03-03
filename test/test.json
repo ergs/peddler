@@ -15,7 +15,7 @@
     "config": {
      "Reactor": {
       "fuel_mass": "1000.0", 
-      "recipe": "recipe", 
+      "recipe": "fuel", 
       "request_lead_time": "6", 
       "commodity": "rx_fuel", 
       "cycle_length": "18" 
@@ -56,6 +56,6 @@
    ], 
    "name": "SingleRegion"
   },
-  "recipe": [{"name": "recipe", "basis": "mass", "nuclide": [{"id": "U235", "comp": 0.03}, {"id": "U238", "comp": 0.97}]}]
+  "recipe": [{"name": "fuel", "basis": "mass", "nuclide": [{"id": "U235", "comp": 0.03}, {"id": "U238", "comp": 0.97}]}]
  }
 }
