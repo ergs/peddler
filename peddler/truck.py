@@ -13,57 +13,57 @@ import cyclus.typesystem as ts
 
 class Truck(Facility):
     """
-    A truck that transports material through the fuel cycle. 
+    A truck that transports material through the fuel cycle.
     """
 
     dest_commodity = ts.String(
-        doc="The commodity that the truck carries", 
+        doc="The commodity that the truck carries",
         tooltip="Shipped Commodity",
         uilabel="Commodity"
     )
 
     source_commodity = ts.String(
-        doc="The commodity that the truck carries", 
+        doc="The commodity that the truck carries",
         tooltip="Shipped Commodity",
         uilabel="Commodity"
     )
 
     contract = ts.PairDoubleMapIntDouble(
-        doc="The contract quantity and recipe", 
+        doc="The contract quantity and recipe",
         tooltip="Contract quantity and recipe",
         uilabel="Contract",
         default=(0,{})
     )
 
     contractee = ts.Int(
-        doc="The reactor that originates the contract with the truck (agentID)", 
+        doc="The reactor that originates the contract with the truck (agentID)",
         tooltip="Reactor generating the contract",
         uilabel="Contractee",
         default=-1
     )
 
     total_trip_duration = ts.Int(
-        doc="The reactor that originates the contract with the truck (agentID)", 
+        doc="The reactor that originates the contract with the truck (agentID)",
         tooltip="Reactor generating the contract",
         uilabel="Contractee"
     )
 
     trip_time = ts.Int(
-        doc="The reactor that originates the contract with the truck (agentID)", 
+        doc="The reactor that originates the contract with the truck (agentID)",
         tooltip="Reactor generating the contract",
         uilabel="Contractee",
         default=-1
     )
 
     return_trip_time = ts.Int(
-        doc="The reactor that originates the contract with the truck (agentID)", 
+        doc="The reactor that originates the contract with the truck (agentID)",
         tooltip="Reactor generating the contract",
         uilabel="Contractee",
         default=-1
     )
 
     capacity = ts.Double(
-        doc="The reactor that originates the contract with the truck (agentID)", 
+        doc="The reactor that originates the contract with the truck (agentID)",
         tooltip="Reactor generating the contract",
         uilabel="Contractee",
     )
@@ -115,7 +115,7 @@ class Truck(Facility):
                     bid = req
                     break
             bids = [bid]
-            port = {"bids": bids, "constraints": self.capacity}        
+            port = {"bids": bids, "constraints": self.capacity}
         else:
             return
 
@@ -126,7 +126,7 @@ class Truck(Facility):
         if self.contractee == -1 and self.inventory.count == 0:
             #offercontract
             for trade in trades:
-                self.contract = (trade.amt, trade.request.target.comp()) 
+                self.contract = (trade.amt, trade.request.target.comp())
                 self.contractee = trade.request.requester.id
         elif self.contractee > -1 and self.inventory.count > 0 and self.trip_time == self.total_trip_duration:
             #offerfuel
