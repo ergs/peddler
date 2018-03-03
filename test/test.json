@@ -1,0 +1,61 @@
+{
+ "simulation": {
+  "archetypes": {
+   "spec": [
+    {"lib": "peddler.truck", "name": "Truck"}, 
+    {"lib": "peddler.reactor", "name": "Reactor"},
+    {"lib": "agents", "name": "Source"},
+    {"lib": "agents", "name": "NullRegion"}, 
+    {"lib": "agents", "name": "NullInst"}
+   ]
+  }, 
+  "control": {"duration": "50", "startmonth": "1", "startyear": "2000"}, 
+  "facility": [
+   {
+    "config": {
+     "Reactor": {
+      "fuel_mass": "1000.0", 
+      "recipe": "recipe", 
+      "request_lead_time": "6", 
+      "commodity": "rx_fuel", 
+      "cycle_length": "18" 
+     }
+    }, 
+    "name": "Reactor"
+   }, 
+   {
+    "config": {
+     "Truck": {
+      "dest_commodity": "rx_fuel", 
+      "source_commodity": "en_fuel.", 
+      "total_trip_duration": "3", 
+      "capacity": "1000.0"
+     }
+    }, 
+    "name": "Truck"
+   },
+   {
+    "config": {
+     "Source": {
+      "commod": "en_fuel",
+      "recipe_name": "recipe",
+      "capacity": "1000.0"
+     }    
+    },
+    "name": "source"
+   }
+  ], 
+  "region": {
+   "config": {"NullRegion": "\n      "}, 
+   "institution": [
+    {
+     "config": {"NullInst": ""}, 
+     "initialfacilitylist": {"entry": {"number": "10", "prototype": "Reactor"}, "entry": {"number": 5, "prototype": "Truck"}}, 
+     "name": "SingleInst"
+    }
+   ], 
+   "name": "SingleRegion"
+  },
+  "recipe": [{"name": "recipe", "basis": "mass", "nuclide": [{"id": "U235", "comp": 0.03}, {"id": "U238", "comp": 0.97}]}]
+ }
+}
