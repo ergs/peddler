@@ -1,4 +1,4 @@
 *.txt
 *.sqlite
 *.h5
-/build
+build/
