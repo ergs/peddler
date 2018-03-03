@@ -1,3 +1,4 @@
 *.txt
 *.sqlite
 *.h5
+/build
