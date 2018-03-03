@@ -31,14 +31,14 @@ class Truck(Facility):
     contract = ts.PairDoubleMapIntDouble(
         doc="The contract quantity and recipe", 
         tooltip="Contract quantity and recipe",
-        uilabel="Contract"
+        uilabel="Contract",
         default=(0,{})
     )
 
     contractee = ts.Int(
         doc="The reactor that originates the contract with the truck (agentID)", 
         tooltip="Reactor generating the contract",
-        uilabel="Contractee"
+        uilabel="Contractee",
         default=-1
     )
 
@@ -51,22 +51,21 @@ class Truck(Facility):
     trip_time = ts.Int(
         doc="The reactor that originates the contract with the truck (agentID)", 
         tooltip="Reactor generating the contract",
-        uilabel="Contractee"
+        uilabel="Contractee",
         default=-1
     )
 
     return_trip_time = ts.Int(
         doc="The reactor that originates the contract with the truck (agentID)", 
         tooltip="Reactor generating the contract",
-        uilabel="Contractee"
+        uilabel="Contractee",
         default=-1
     )
 
-    
     capacity = ts.Double(
         doc="The reactor that originates the contract with the truck (agentID)", 
         tooltip="Reactor generating the contract",
-        uilabel="Contractee"
+        uilabel="Contractee",
         default=-1
     )
 
@@ -104,13 +103,12 @@ class Truck(Facility):
             return
         if self.dest_commodity not in requests and self.dest_commodity+"-contract" not in requests:
             return
-
         if self.contractee == -1 and self.inventory.count == 0:
             #offercontract
             reqs = requests[self.dest_commodity+"-contract"]
             bids = list(reqs)
             port = {"bids": bids, "constraints": self.inventory.capacity}
-        elif self.contractee > -1 and self.inventory.count > 0 and self.trip_time = self.total_trip_duration:
+        elif self.contractee > -1 and self.inventory.count > 0 and self.trip_time == self.total_trip_duration:
             #offerfuel
             reqs = requests[self.dest_commodity]
             for req in reqs:
@@ -131,12 +129,12 @@ class Truck(Facility):
             for trade in trades:
                 self.contract = (trade.amt, trade.request.target.comp()) 
                 self.contractee = trade.request.requester.id
-                self.return_trip_time = 0
-        elif self.contractee > -1 and self.inventory.count > 0 and self.trip_time = self.total_trip_duration:
+        elif self.contractee > -1 and self.inventory.count > 0 and self.trip_time == self.total_trip_duration:
             #offerfuel
             for trade in trades:
                 mat = self.inventory.pop()
                 responses[trade] = mat
+            self.return_trip_time = 0
             self.contract = (-1, {})
             self.contractee = -1
         return responses
@@ -144,6 +142,6 @@ class Truck(Facility):
     def accept_material_trades(self, responses):
         if self.return_trip_time >= 0:
             return
-        for mat in responses.values()
+        for mat in responses.values():
             self.inventory.push(mat)
             self.travel_time = 0

@@ -80,7 +80,7 @@ class Reactor(Facility):
             commods = {self.commodity: target_a}
             port = {"commodities": commods, "constraints": request_qty}
             ports.append(port)
-        if self.ct_time == self.cycle_length-self.request_lead_time
+        if self.ct_time == self.cycle_length-self.request_lead_time:
             request_qty = self.fuel_mass
             recipe_a = self.context().get_recipe(self.recipe)
             target_a = ts.Material.create_untracked(request_qty, recipe_a)

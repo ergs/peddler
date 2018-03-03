@@ -6,7 +6,7 @@ VERSION = '0.0.1'
 setup_kwargs = {
     "version": VERSION,
     "description": 'Transport model for Cyclus',
-    "authors": 'Robert Flanagan, Anthony Scopatz',
+    "author": 'Robert Flanagan, Anthony Scopatz',
     }
 
 if __name__ == '__main__':
