@@ -32,7 +32,7 @@ class Truck(Facility):
         doc="The contract quantity and recipe",
         tooltip="Contract quantity and recipe",
         uilabel="Contract",
-        default=(0,{})
+        default=(0.0,{})
     )
 
     contractee = ts.Int(
@@ -74,7 +74,7 @@ class Truck(Facility):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.inventory.capacity = self.capacity
-
+    
     def tock(self):
         if self.return_trip_time >= 0:
             self.return_trip_time += 1
@@ -100,13 +100,17 @@ class Truck(Facility):
     def get_material_bids(self, requests):
         if self.return_trip_time >= 0:
             return
+        ports = []
         if self.dest_commodity not in requests and self.dest_commodity+"-contract" not in requests:
             return
         if self.contractee == -1 and self.inventory.count == 0:
             #offercontract
-            reqs = requests[self.dest_commodity+"-contract"]
-            bids = list(reqs)
-            port = {"bids": bids, "constraints": self.inventory.capacity}
+            if self.dest_commodity+"-contract" in requests:
+                print(str(self.id) + " is accepting contracts")
+                reqs = requests[self.dest_commodity+"-contract"]
+                bids = list(reqs)
+                ports.append({"bids": bids, "constraints": self.inventory.capacity})
+                return ports
         elif self.contractee > -1 and self.inventory.count > 0 and self.trip_time == self.total_trip_duration:
             #offerfuel
             reqs = requests[self.dest_commodity]
@@ -115,19 +119,24 @@ class Truck(Facility):
                     bid = req
                     break
             bids = [bid]
-            port = {"bids": bids, "constraints": self.capacity}
+            ports.append({"bids": bids, "constraints": self.capacity})
+            return ports
         else:
-            return
+            return ports
 
     def get_material_trades(self, trades):
         responses = {}
         if self.return_trip_time >= 0:
             return responses
         if self.contractee == -1 and self.inventory.count == 0:
+            print("Test")
             #offercontract
             for trade in trades:
+                print("test1")
                 self.contract = (trade.amt, trade.request.target.comp())
-                self.contractee = trade.request.requester.id
+                print("test2")
+                hm = trade.request.requester
+                print(str(self.id) + "accepting contract from " + str(self.contractee))
         elif self.contractee > -1 and self.inventory.count > 0 and self.trip_time == self.total_trip_duration:
             #offerfuel
             for trade in trades:
@@ -144,3 +153,4 @@ class Truck(Facility):
         for mat in responses.values():
             self.inventory.push(mat)
             self.travel_time = 0
+            print(str(self.id) + " taking a load of fuel to " + str(self.contractee))

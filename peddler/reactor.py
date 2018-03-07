@@ -56,33 +56,31 @@ class Reactor(Facility):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.ct_time = 0;
         self.rx_time = 0;
-    
+        self.ct_time = -2;        
+
     def tick(self):
+        print(self.rx_time, self.ct_time)
         if self.rx_time == self.cycle_length:
             self.waste.push(self.core.pop)
             self.core.push(self.fresh_fuel.pop)
-            self.rx_time = 0
         elif self.rx_time < self.cycle_length:
             self.rx_time += 1
-
-    def tock(self):
-        if self.rx_time == 0:
-            self.ct_time = 0
+            self.ct_time += 1
 
     def get_material_requests(self):
         ports = []
         if self.fresh_fuel.count == 0:
             request_qty = self.fuel_mass
-            recipe_a = self.context().get_recipe(self.recipe)
+            recipe_a = self.context.get_recipe(self.recipe)
             target_a = ts.Material.create_untracked(request_qty, recipe_a)
             commods = {self.commodity: target_a}
             port = {"commodities": commods, "constraints": request_qty}
             ports.append(port)
-        if self.ct_time == self.cycle_length-self.request_lead_time:
+        if self.ct_time == self.cycle_length-self.request_lead_time or self.ct_time == -1:
+            print(str(self.id) + " requesting contract")
             request_qty = self.fuel_mass
-            recipe_a = self.context().get_recipe(self.recipe)
+            recipe_a = self.context.get_recipe(self.recipe)
             target_a = ts.Material.create_untracked(request_qty, recipe_a)
             commods = {self.commodity+"-contract": target_a}
             port = {"commodities": commods, "constraints": request_qty}
@@ -92,4 +90,6 @@ class Reactor(Facility):
     def accept_material_trades(self, responses):
         for mat in responses:
             self.fresh_fuel.push(mat)
+            self.rx_time = 0
+            self.ct_time = 0
         

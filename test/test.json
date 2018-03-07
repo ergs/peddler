@@ -9,19 +9,19 @@
     {"lib": "agents", "name": "NullInst"}
    ]
   }, 
-  "control": {"duration": "50", "startmonth": "1", "startyear": "2000"}, 
+  "control": {"duration": "15", "startmonth": "1", "startyear": "2000"}, 
   "facility": [
    {
     "config": {
      "Reactor": {
       "fuel_mass": "1000.0", 
       "recipe": "fuel", 
-      "request_lead_time": "6", 
+      "request_lead_time": "12", 
       "commodity": "rx_fuel", 
       "cycle_length": "18" 
      }
     }, 
-    "name": "Reactor"
+    "name": "reactor"
    }, 
    {
     "config": {
@@ -32,14 +32,14 @@
       "capacity": "1000.0"
      }
     }, 
-    "name": "Truck"
+    "name": "truck"
    },
    {
     "config": {
      "Source": {
       "commod": "en_fuel",
-      "recipe_name": "recipe",
-      "capacity": "1000.0"
+      "recipe_name": "fuel",
+      "capacity": "100000.0"
      }    
     },
     "name": "source"
@@ -50,7 +50,7 @@
    "institution": [
     {
      "config": {"NullInst": ""}, 
-     "initialfacilitylist": {"entry": {"number": "10", "prototype": "Reactor"}, "entry": {"number": 5, "prototype": "Truck"}}, 
+     "initialfacilitylist": {"entry": [{"number": 1, "prototype": "reactor"}, {"number": 1, "prototype": "truck"}, {"number": 20, "prototype": "source"}]}, 
      "name": "SingleInst"
     }
    ], 
