@@ -51,7 +51,7 @@ class Reactor(Facility):
 
     fresh_fuel = ts.ResBufMaterialInv(capacity=1000.)
     core = ts.ResBufMaterialInv(capacity=1000.)
-    waste = ts.ResBufMaterialInv(capacity=1000.)
+    waste = ts.ResBufMaterialInv()
     
 
     def __init__(self, *args, **kwargs):

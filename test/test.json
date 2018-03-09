@@ -9,7 +9,7 @@
     {"lib": "agents", "name": "NullInst"}
    ]
   }, 
-  "control": {"duration": "16", "startmonth": "1", "startyear": "2000"}, 
+  "control": {"duration": "100", "startmonth": "1", "startyear": "2000"}, 
   "facility": [
    {
     "config": {
