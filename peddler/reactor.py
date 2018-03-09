@@ -60,10 +60,10 @@ class Reactor(Facility):
         self.ct_time = -2;        
 
     def tick(self):
-        print(self.rx_time, self.ct_time)
+        print(self.fresh_fuel.count, self.core.count, self.waste.count)
         if self.rx_time == self.cycle_length:
-            self.waste.push(self.core.pop)
-            self.core.push(self.fresh_fuel.pop)
+            self.waste.push(self.core.pop())
+            self.core.push(self.fresh_fuel.pop())
         elif self.rx_time < self.cycle_length:
             self.rx_time += 1
             self.ct_time += 1
@@ -71,6 +71,7 @@ class Reactor(Facility):
     def get_material_requests(self):
         ports = []
         if self.fresh_fuel.count == 0:
+            print(str(self.id) + " is requesting fuel")
             request_qty = self.fuel_mass
             recipe_a = self.context.get_recipe(self.recipe)
             target_a = ts.Material.create_untracked(request_qty, recipe_a)
@@ -88,8 +89,11 @@ class Reactor(Facility):
         return ports
 
     def accept_material_trades(self, responses):
-        for mat in responses:
-            self.fresh_fuel.push(mat)
+        for mat in responses.values():
+            if self.core.count == 0:
+                self.core.push(mat)
+            else:
+                self.fresh_fuel.push(mat)
             self.rx_time = 0
             self.ct_time = 0
         

@@ -9,7 +9,7 @@
     {"lib": "agents", "name": "NullInst"}
    ]
   }, 
-  "control": {"duration": "15", "startmonth": "1", "startyear": "2000"}, 
+  "control": {"duration": "16", "startmonth": "1", "startyear": "2000"}, 
   "facility": [
    {
     "config": {
@@ -27,7 +27,7 @@
     "config": {
      "Truck": {
       "dest_commodity": "rx_fuel", 
-      "source_commodity": "en_fuel.", 
+      "source_commodity": "en_fuel", 
       "total_trip_duration": "3", 
       "capacity": "1000.0"
      }
