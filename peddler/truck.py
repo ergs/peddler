@@ -76,8 +76,8 @@ class Truck(Facility):
         self.inventory.capacity = self.capacity
     
     def tock(self):
-        print("Truck: " + str(self.inventory.count))
-        print(self.return_trip_time, self.trip_time, self.total_trip_duration)
+        #print("Truck: " + str(self.inventory.count))
+        #print(self.return_trip_time, self.trip_time, self.total_trip_duration)
         if self.return_trip_time >= 0:
             self.return_trip_time += 1
         if self.return_trip_time == self.total_trip_duration:
@@ -94,7 +94,7 @@ class Truck(Facility):
             target_a = ts.Material.create_untracked(self.contract[0], self.contract[1])
             commods = {self.source_commodity: target_a}
             port = {"commodities": commods, "constraints": self.inventory.capacity}
-            print(str(self.id) + " is attempting to pick up fresh fuel")
+            #print(str(self.id) + " is attempting to pick up fresh fuel")
             return [port]
         else:
             return []
@@ -106,7 +106,7 @@ class Truck(Facility):
         if self.dest_commodity not in requests and self.dest_commodity+"-contract" not in requests:
             return
         if self.contractee == -1 and self.inventory.count == 0:
-            print(str(self.id) + " is accepting contracts")
+            #print(str(self.id) + " is accepting contracts")
             #offercontract
             if self.dest_commodity+"-contract" in requests:
                 reqs = requests[self.dest_commodity+"-contract"]
@@ -135,13 +135,13 @@ class Truck(Facility):
             for trade in trades:
                 self.contract = (trade.amt, trade.request.target.comp())
                 self.contractee = trade.request.requester.id
-                print(str(self.id) + " is accepting a contract from " + str(self.contractee))
+                #print(str(self.id) + " is accepting a contract from " + str(self.contractee))
         elif self.contractee > -1 and self.inventory.count > 0 and self.trip_time == self.total_trip_duration:
             #offerfuel
             for trade in trades:
                 mat = self.inventory.pop()
                 responses[trade] = mat
-            print(str(self.id) + " is dropping off fuel at " + str(self.contractee))
+            #print(str(self.id) + " is dropping off fuel at " + str(self.contractee))
             self.return_trip_time = 0
             self.contract = (-1, {})
             self.contractee = -1
@@ -153,4 +153,4 @@ class Truck(Facility):
         for mat in responses.values():
             self.inventory.push(mat)
             self.trip_time = 0
-            print(str(self.id) + " taking a load of fuel to " + str(self.contractee))
+            #print(str(self.id) + " taking a load of fuel to " + str(self.contractee))

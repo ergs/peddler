@@ -71,7 +71,7 @@ class Reactor(Facility):
     def get_material_requests(self):
         ports = []
         if self.fresh_fuel.count == 0:
-            print(str(self.id) + " is requesting fuel")
+            #print(str(self.id) + " is requesting fuel")
             request_qty = self.fuel_mass
             recipe_a = self.context.get_recipe(self.recipe)
             target_a = ts.Material.create_untracked(request_qty, recipe_a)
@@ -79,7 +79,7 @@ class Reactor(Facility):
             port = {"commodities": commods, "constraints": request_qty}
             ports.append(port)
         if self.ct_time == self.cycle_length-self.request_lead_time or self.ct_time == -1:
-            print(str(self.id) + " requesting contract")
+            #print(str(self.id) + " requesting contract")
             request_qty = self.fuel_mass
             recipe_a = self.context.get_recipe(self.recipe)
             target_a = ts.Material.create_untracked(request_qty, recipe_a)
