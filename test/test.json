@@ -50,7 +50,7 @@
    "institution": [
     {
      "config": {"NullInst": ""}, 
-     "initialfacilitylist": {"entry": [{"number": 1, "prototype": "reactor"}, {"number": 1, "prototype": "truck"}, {"number": 20, "prototype": "source"}]}, 
+     "initialfacilitylist": {"entry": [{"number": 5, "prototype": "reactor"}, {"number": 10, "prototype": "truck"}, {"number": 20, "prototype": "source"}]}, 
      "name": "SingleInst"
     }
    ], 

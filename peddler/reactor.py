@@ -60,7 +60,7 @@ class Reactor(Facility):
         self.ct_time = -2;        
 
     def tick(self):
-        print(self.fresh_fuel.count, self.core.count, self.waste.count)
+        #print(self.id, self.fresh_fuel.count, self.core.count, self.waste.count)
         if self.rx_time == self.cycle_length:
             self.waste.push(self.core.pop())
             self.core.push(self.fresh_fuel.pop())
